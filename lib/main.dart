@@ -1,53 +1,73 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(const RootApp());
+}
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class RootApp extends StatelessWidget {
+  const RootApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(primarySwatch: Colors.green),
-        home: HomePage());
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Random Text Generator'),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  debugPrint('list');
+                },
+                icon: const Icon(Icons.list))
+          ],
+        ),
+        body: const ListGen(),
+      ),
+    );
   }
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class ListGen extends StatefulWidget {
+  const ListGen({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<ListGen> createState() => _ListGenState();
 }
 
-class _HomePageState extends State<HomePage> {
-  int page = 0;
+class _ListGenState extends State<ListGen> {
+  
+  final _RandomWordPairs = <WordPair>[];
+  var savedPairs = [];
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Flutter'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          debugPrint('Pressed');
-        },
-        child: Icon(Icons.add),
-      ),
-      bottomNavigationBar: NavigationBar(
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.home), label: 'home'),
-          NavigationDestination(icon: Icon(Icons.person), label: 'profile')
-        ],
-        onDestinationSelected: (int value) {
-          setState(() {
-            page = value;
-          });
-        },
-        selectedIndex: page,
-      ),
+    return ListView.builder(
+      itemBuilder: (context, item) {
+        if (item.isOdd) {
+          return const Divider();
+        }
+        final index = item ~/ 2;
+
+        if (index >= _RandomWordPairs.length) {
+          _RandomWordPairs.addAll(generateWordPairs().take(10));
+        }
+        var pair = _RandomWordPairs[index];
+
+        var _alreadySaved = savedPairs.contains(pair);
+        return ListTile(
+          onTap: () {
+            setState(() {
+              _alreadySaved ? savedPairs.remove(pair) : savedPairs.add(pair);
+            });
+          },
+          title: Text(pair.asPascalCase),
+          trailing:
+              Icon(_alreadySaved ? Icons.favorite : Icons.favorite_border),
+          iconColor: (_alreadySaved ? Colors.red : null),
+        );
+      },
     );
   }
 }
