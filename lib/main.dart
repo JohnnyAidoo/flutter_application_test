@@ -14,11 +14,11 @@ class RootApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Random Text Generator'),
-        ),
-        body: const ListGen(),
-        floatingActionButton: FloatingActionButton(
+      appBar: AppBar(
+        title: const Text('Random Text Generator'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.list),
             onPressed: () {
               Navigator.push(
                   context,
@@ -26,7 +26,11 @@ class RootApp extends StatelessWidget {
                       builder: (context) =>
                           SavedPairsPage(savedPairs: savedPairs)));
             },
-            child: Icon(Icons.favorite)));
+          )
+        ],
+      ),
+      body: const ListGen(),
+    );
   }
 }
 
