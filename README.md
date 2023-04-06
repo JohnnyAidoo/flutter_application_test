@@ -1,16 +1,11 @@
 # flutter_application_test
 
-A new Flutter project.
+My First Application After Learning Flutter And Dart From Youtube.
 
-## Getting Started
+It a little word pair generator which generates random words
+and you can save or favorite some words and view you saved or 
+favorited words on the next page(when you click on the icon 
+at the appbar).
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+greate experience
