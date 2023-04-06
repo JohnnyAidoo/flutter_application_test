@@ -1,31 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
+import 'package:flutter_application_test/saved_pairs_page.dart';
 
 void main() {
-  runApp(const RootApp());
+  runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: RootApp()));
 }
+
+List<String> savedPairs = [];
 
 class RootApp extends StatelessWidget {
   const RootApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: const Text('Random Text Generator'),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  debugPrint('list');
-                },
-                icon: const Icon(Icons.list))
-          ],
         ),
         body: const ListGen(),
-      ),
-    );
+        floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          SavedPairsPage(savedPairs: savedPairs)));
+            },
+            child: Icon(Icons.favorite)));
   }
 }
 
@@ -37,9 +38,7 @@ class ListGen extends StatefulWidget {
 }
 
 class _ListGenState extends State<ListGen> {
-  
   final _RandomWordPairs = <WordPair>[];
-  var savedPairs = [];
 
   @override
   Widget build(BuildContext context) {
@@ -55,11 +54,15 @@ class _ListGenState extends State<ListGen> {
         }
         var pair = _RandomWordPairs[index];
 
-        var _alreadySaved = savedPairs.contains(pair);
+        var _alreadySaved = savedPairs.contains(pair.asPascalCase);
         return ListTile(
           onTap: () {
             setState(() {
-              _alreadySaved ? savedPairs.remove(pair) : savedPairs.add(pair);
+              if (_alreadySaved) {
+                savedPairs.remove(pair.asPascalCase);
+              } else {
+                savedPairs.add(pair.asPascalCase);
+              }
             });
           },
           title: Text(pair.asPascalCase),
